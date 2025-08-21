@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 972f77a9c11723a43aea8898eca4f700, type: 3}
+  m_Name: Cowboy2
+  m_EditorClassIdentifier: 
+  modelPrefab: {fileID: 6410994417570255476, guid: 1bff03203b68b2845833dc1204204908, type: 3}
+  health: 100
+  spawnVFx: {fileID: 466331417821775796, guid: ec2e61e3e6734984fa24d1e6117d5c6d, type: 3}
+  hitVFx: {fileID: 0}
+  hitSFx: {fileID: 0}
