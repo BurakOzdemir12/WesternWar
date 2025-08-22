@@ -8,6 +8,12 @@ public class CrowdSystem : MonoBehaviour
 {
     public static CrowdSystem instance;
     public static event Action OnRunnersChanged;
+    public static event Action<WeaponsSo> OnWeaponChanged;
+
+    [Header("Weapon State")] [SerializeField]
+    private WeaponsSo startingWeapon;
+
+    private WeaponsSo _currentWeaponSo;
 
     [Header("References")] [SerializeField]
     private PlayerController playerController;
@@ -26,6 +32,8 @@ public class CrowdSystem : MonoBehaviour
     private void Awake()
     {
         instance = this;
+        _currentWeaponSo = startingWeapon;
+        
         playerController = GetComponent<PlayerController>();
     }
 
@@ -33,9 +41,16 @@ public class CrowdSystem : MonoBehaviour
     {
         GameManager.Subscribe(HandleGameStateChange);
         PlayerHealth.OnPlayerDeath += HandlePlayerDeathByEnemy;
+        Barrel.OnBreakBarrelWeapon += HandleBarrelReward;
     }
 
-    // Assets/Scripts/Crowd/CrowdSystem.cs
+    private void HandleBarrelReward(WeaponsSo weapons)
+    {
+        _currentWeaponSo = weapons;
+        OnWeaponChanged?.Invoke(weapons);
+    }
+
+    public WeaponsSo GetCurrentWeapon() => _currentWeaponSo;
 
     private void HandlePlayerDeathByEnemy(PlayerHealth playerHealth)
     {
@@ -76,6 +91,9 @@ public class CrowdSystem : MonoBehaviour
             {
                 _runners.Add(child.gameObject);
             }
+
+            var pwc = child.GetComponent<PlayerWeaponController>();
+            if (pwc && _currentWeaponSo) pwc.ForceSetWeapon(_currentWeaponSo);
         }
 
         // _runners.Add(runnerPrefab);
@@ -147,6 +165,8 @@ public class CrowdSystem : MonoBehaviour
         for (int i = 0; i < amount; i++)
         {
             var newRunner = Instantiate(runnerPrefab, runnerParent.position, Quaternion.identity, runnerParent);
+            var pwc = newRunner.GetComponent<PlayerWeaponController>();
+            if (pwc && _currentWeaponSo) pwc.ForceSetWeapon(_currentWeaponSo);
             ChangeRadiusByCount(amount);
             _runners.Add(newRunner);
         }
@@ -230,5 +250,6 @@ public class CrowdSystem : MonoBehaviour
     {
         GameManager.Unsubscribe(HandleGameStateChange);
         PlayerHealth.OnPlayerDeath -= HandlePlayerDeathByEnemy;
+        Barrel.OnBreakBarrelWeapon -= HandleBarrelReward;
     }
 }

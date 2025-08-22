@@ -2,21 +2,23 @@ using System;
 using TMPro;
 using UnityEngine;
 
-public enum BarrelBonusType
-{
-    Gun,
-    Man,
-    HorseMan
-}
+
 public class Barrel : MonoBehaviour, IHittableProp
 {
     // const string playerString = "Player";
+    public static event Action OnBreakBarrelMan;
+    public static event Action<WeaponsSo> OnBreakBarrelWeapon;
 
     [SerializeField] private float rotationSpeed = 100f;
     [SerializeField] private Transform barrelModel;
-    [Header("Bonus Settings")]
-    [SerializeField] private BarrelBonusType barrelBonusType;
-    
+
+    [Header("Bonus Settings")] [SerializeField]
+    private WeaponType rewardWeapon;
+
+    [SerializeField] private RewardType rewardType;
+    [SerializeField] private WeaponsSo weapon;
+    [SerializeField] private int barrelBonusValue;
+
     [Header("Counter Settings")] [SerializeField]
     private int counterValue;
 
@@ -28,6 +30,7 @@ public class Barrel : MonoBehaviour, IHittableProp
         {
             counterText.text = counterValue.ToString();
         }
+
         SetBonusType();
     }
 
@@ -66,10 +69,12 @@ public class Barrel : MonoBehaviour, IHittableProp
 
     private void SetBonusType()
     {
-        switch (barrelBonusType)
+        switch (rewardType)
         {
-            case BarrelBonusType.Man:
-                
+            case RewardType.Man:
+                barrelBonusValue = 3;
+                break;
+            case RewardType.Weapon:
                 break;
         }
     }
@@ -85,7 +90,15 @@ public class Barrel : MonoBehaviour, IHittableProp
 
     private void HandleBonus()
     {
-        
+        switch (rewardType)
+        {
+            case RewardType.Man:
+                OnBreakBarrelMan?.Invoke();
+                break;
+            case RewardType.Weapon:
+                OnBreakBarrelWeapon?.Invoke(weapon);
+                break;
+        }
     }
 
     private void OnTriggerEnter(Collider other)
