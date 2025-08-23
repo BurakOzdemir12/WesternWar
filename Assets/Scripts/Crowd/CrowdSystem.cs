@@ -14,6 +14,7 @@ public class CrowdSystem : MonoBehaviour
     private WeaponsSo startingWeapon;
 
     private WeaponsSo _currentWeaponSo;
+    [SerializeField] private AudioSource[] gunAudioSources;
 
     [Header("References")] [SerializeField]
     private PlayerController playerController;
@@ -33,18 +34,24 @@ public class CrowdSystem : MonoBehaviour
     {
         instance = this;
         _currentWeaponSo = startingWeapon;
-        
+
         playerController = GetComponent<PlayerController>();
     }
 
     private void OnEnable()
     {
         GameManager.Subscribe(HandleGameStateChange);
-        PlayerHealth.OnPlayerDeath += HandlePlayerDeathByEnemy;
-        Barrel.OnBreakBarrelWeapon += HandleBarrelReward;
+        PlayerHealth.OnAnyPlayerDeath += HandlePlayerDeathByEnemy;
+        Barrel.OnBreakBarrelWeapon += HandleBarrelWeaponReward;
+        Barrel.OnBreakBarrelMan += HandleBarrelManReward;
     }
 
-    private void HandleBarrelReward(WeaponsSo weapons)
+    private void HandleBarrelManReward(int amount)
+    {
+        ApplyBonus(amount, BonusType.Addition);
+    }
+
+    private void HandleBarrelWeaponReward(WeaponsSo weapons)
     {
         _currentWeaponSo = weapons;
         OnWeaponChanged?.Invoke(weapons);
@@ -56,10 +63,8 @@ public class CrowdSystem : MonoBehaviour
     {
         if (playerHealth == null) return;
 
-        // Listeden çıkar
         _runners.Remove(playerHealth.gameObject);
 
-        // Parent'tan ayır ve yok et
         if (playerHealth.transform.parent == runnerParent)
             playerHealth.transform.SetParent(null);
 
@@ -191,7 +196,7 @@ public class CrowdSystem : MonoBehaviour
 
                 if (playerHealth != null)
                 {
-                    playerHealth.DisableWDeath(); // sadece kendi canvas’ını kapatır
+                    playerHealth.DisableWDeath(); 
                 }
 
                 playerAnimator.SetMultipleDeathState(runnerToRemove);
@@ -249,7 +254,9 @@ public class CrowdSystem : MonoBehaviour
     private void OnDisable()
     {
         GameManager.Unsubscribe(HandleGameStateChange);
-        PlayerHealth.OnPlayerDeath -= HandlePlayerDeathByEnemy;
-        Barrel.OnBreakBarrelWeapon -= HandleBarrelReward;
+        PlayerHealth.OnAnyPlayerDeath -= HandlePlayerDeathByEnemy;
+        Barrel.OnBreakBarrelWeapon -= HandleBarrelWeaponReward;
+        Barrel.OnBreakBarrelMan -= HandleBarrelManReward;
+
     }
 }

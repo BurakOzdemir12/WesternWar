@@ -6,7 +6,7 @@ using UnityEngine;
 public class Barrel : MonoBehaviour, IHittableProp
 {
     // const string playerString = "Player";
-    public static event Action OnBreakBarrelMan;
+    public static event Action<int> OnBreakBarrelMan;
     public static event Action<WeaponsSo> OnBreakBarrelWeapon;
 
     [SerializeField] private float rotationSpeed = 100f;
@@ -93,7 +93,7 @@ public class Barrel : MonoBehaviour, IHittableProp
         switch (rewardType)
         {
             case RewardType.Man:
-                OnBreakBarrelMan?.Invoke();
+                OnBreakBarrelMan?.Invoke(barrelBonusValue);
                 break;
             case RewardType.Weapon:
                 OnBreakBarrelWeapon?.Invoke(weapon);

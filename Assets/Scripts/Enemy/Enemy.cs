@@ -11,6 +11,9 @@ public class Enemy : MonoBehaviour
     [SerializeField] private BehaviorGraphAgent behaviorGraphAgent;
     [SerializeField] private string speedVarName = "speed";
     [SerializeField] private string attackCooldownVarName = "attackCooldown";
+    [SerializeField] private Camera playerCamera;
+    [SerializeField] private EnemyHealth enemyHealth;
+
     private bool _isDead = false;
 
     [Header("projectile")] [SerializeField]
@@ -20,12 +23,13 @@ public class Enemy : MonoBehaviour
 
     private void Awake()
     {
+        if (!enemyHealth) enemyHealth = GetComponent<EnemyHealth>();
         if (!behaviorGraphAgent) behaviorGraphAgent = GetComponent<BehaviorGraphAgent>();
     }
 
     private void OnEnable()
     {
-        EnemyHealth.OnEnemyDeath += HandleEnemyDeath;
+        enemyHealth.OnEnemyDeath += HandleEnemyDeath;
         behaviorGraphAgent.BlackboardReference.SetVariableValue(speedVarName, enemySo.speed);
         behaviorGraphAgent.BlackboardReference.SetVariableValue(attackCooldownVarName, enemySo.attackCooldown);
     }
@@ -37,6 +41,7 @@ public class Enemy : MonoBehaviour
 
     private void Start()
     {
+        playerCamera = Camera.main;
     }
 
     public void MeleeAttack()
@@ -97,7 +102,7 @@ public class Enemy : MonoBehaviour
         var volume = enemySo.attackProfiles.volume;
         AudioSource.PlayClipAtPoint(
             clip,
-            transform.position,
+            playerCamera.transform.position,
             volume
         );
 
@@ -149,6 +154,6 @@ public class Enemy : MonoBehaviour
 
     private void OnDisable()
     {
-        EnemyHealth.OnEnemyDeath -= HandleEnemyDeath;
+        enemyHealth.OnEnemyDeath -= HandleEnemyDeath;
     }
 }

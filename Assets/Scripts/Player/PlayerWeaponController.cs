@@ -5,9 +5,12 @@ using UnityEngine;
 public class PlayerWeaponController : MonoBehaviour
 {
     public static PlayerWeaponController instance;
+
+
     [SerializeField] private WeaponsSo startingWeapon;
     [SerializeField] private Transform weaponHolder;
     [SerializeField] private WeaponsSo currentSo;
+    [SerializeField] private PlayerHealth playerHealth;
 
     private readonly Dictionary<WeaponsSo, Weapon> _cache = new();
     private Weapon _currentWeapon;
@@ -17,8 +20,10 @@ public class PlayerWeaponController : MonoBehaviour
     private float _fireTimer = 0f;
     private float FireInterval => 1f / currentSo.fireRate;
 
+
     private void Awake()
     {
+        playerHealth = GetComponent<PlayerHealth>();
     }
 
     private void OnEnable()
@@ -26,6 +31,8 @@ public class PlayerWeaponController : MonoBehaviour
         GameManager.OnGameStateChanged += HandleGameStateChanged;
         CrowdSystem.OnRunnersChanged += HandleCrowdChanged;
         CrowdSystem.OnWeaponChanged += HandleWeaponChanged;
+        playerHealth.OnPlayerDeath += HandlePlayerDeath;
+
         if (GameManager.instance != null)
             _isInGame = GameManager.instance.IsGameActive;
         else
@@ -50,19 +57,22 @@ public class PlayerWeaponController : MonoBehaviour
 
     void Update()
     {
-        if (!_isInGame || !_currentWeapon  || !currentSo) return;
+        if (!_isInGame || !_currentWeapon || !currentSo) return;
 
         _fireTimer += Time.deltaTime;
         if (_fireTimer >= FireInterval)
         {
-            _currentWeapon.Fire();
-            // HandleFire();
-            _fireTimer = 0f; // catch-up YOK: tek mermi, sıfırla
-            // Eğer kare düşüşlerinde atış kaçırmak istemezsen:
-            // _fireTimer -= FireInterval;  // (ama bu da birikme telafisi yapar)
+            _currentWeapon.Fire(currentSo);
+
+            _fireTimer = 0f;
+
         }
     }
 
+    private void HandlePlayerDeath(PlayerHealth obj)
+    {
+        SetWeaponVisibility(false);
+    }
 
     private void HandleWeaponChanged(WeaponsSo so)
     {
@@ -95,7 +105,13 @@ public class PlayerWeaponController : MonoBehaviour
 
         currentSo = so;
         _fireTimer = 0f;
-        weaponHolder.gameObject.SetActive(true);
+        
+        SetWeaponVisibility(true);
+    }
+
+    private void SetWeaponVisibility(bool shown)
+    {
+        weaponHolder.gameObject.SetActive(shown);
     }
 
     private void HandleCrowdChanged()
@@ -108,7 +124,8 @@ public class PlayerWeaponController : MonoBehaviour
         _isInGame = newState == GameManager.GameState.Game;
         if (_isInGame)
             _fireTimer = 0f;
-        weaponHolder.gameObject.SetActive(_isInGame);
+        SetWeaponVisibility(_isInGame);
+        // weaponHolder.gameObject.SetActive(_isInGame);
     }
 
 
@@ -124,5 +141,6 @@ public class PlayerWeaponController : MonoBehaviour
         GameManager.OnGameStateChanged -= HandleGameStateChanged;
         CrowdSystem.OnRunnersChanged -= HandleCrowdChanged;
         CrowdSystem.OnWeaponChanged -= HandleWeaponChanged;
+        playerHealth.OnPlayerDeath -= HandlePlayerDeath;
     }
 }

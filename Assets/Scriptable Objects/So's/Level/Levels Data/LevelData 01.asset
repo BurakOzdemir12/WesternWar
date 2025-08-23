@@ -17,33 +17,43 @@ MonoBehaviour:
   - spawnSequence:
     - prefab: {fileID: 6652699965367674026, guid: b4d2fc2c5eafc684981cef3bf413feaf, type: 3}
       offsetZ: 30
-    - prefab: {fileID: 6652699965367674026, guid: 4c3defe260fabed4dbdf7fa152be48d9, type: 3}
-      offsetZ: 40
-    - prefab: {fileID: 6652699965367674026, guid: 47e740a925d5473438fbb21ed058e803, type: 3}
+    - prefab: {fileID: 6652699965367674026, guid: baa4287949baf914f95add9e2790e47d, type: 3}
+      offsetZ: 35
+    - prefab: {fileID: 6652699965367674026, guid: c09e61441d4fa7f4baaf0c72f43c3f7b, type: 3}
       offsetZ: 50
-    - prefab: {fileID: 6652699965367674026, guid: 78869249449a1374bb292ef553821711, type: 3}
-      offsetZ: 100
-    - prefab: {fileID: 6652699965367674026, guid: 1e97f02c77f1c664da60e09e10c234e9, type: 3}
-      offsetZ: 110
+    - prefab: {fileID: 6652699965367674026, guid: 0ec8bd1557f6fe84da9213bbfaf7803e, type: 3}
+      offsetZ: 60
   enemySpawns:
   - enemyPrefab:
     - {fileID: 7283756955264561415, guid: 04c9702fe4616c74d98498416cfabac0, type: 3}
-    enemyCounts: 00000000
-    spawnInterval: 0.1
-    spawnExactTime: 5
-    spawnInstant: 0
-    maxEnemies: 1
-    spawnOffsetZMin: 40
-    spawnOffsetZMax: 45
-  - enemyPrefab:
-    - {fileID: 8878856274191464791, guid: 7fbcdf0bbb8f7784f8b82955084f0811, type: 3}
-    enemyCounts: 00000000
+    - {fileID: 3419931874636648768, guid: acd60e49c9eab29478cecb628c3fe2d5, type: 3}
+    enemyCounts: 0500000001000000
     spawnInterval: 0.1
     spawnExactTime: 0
+    spawnInstant: 0
+    maxEnemies: 6
+    spawnOffsetZMin: 50
+    spawnOffsetZMax: 55
+  - enemyPrefab:
+    - {fileID: 7283756955264561415, guid: 04c9702fe4616c74d98498416cfabac0, type: 3}
+    - {fileID: 3419931874636648768, guid: acd60e49c9eab29478cecb628c3fe2d5, type: 3}
+    enemyCounts: 0300000001000000
+    spawnInterval: 0.4
+    spawnExactTime: 5
+    spawnInstant: 0
+    maxEnemies: 4
+    spawnOffsetZMin: 60
+    spawnOffsetZMax: 60
+  - enemyPrefab:
+    - {fileID: 7283756955264561415, guid: 04c9702fe4616c74d98498416cfabac0, type: 3}
+    - {fileID: 8878856274191464791, guid: 7fbcdf0bbb8f7784f8b82955084f0811, type: 3}
+    enemyCounts: 0500000001000000
+    spawnInterval: 0
+    spawnExactTime: 0
     spawnInstant: 1
-    maxEnemies: 0
-    spawnOffsetZMin: 30
-    spawnOffsetZMax: 30
+    maxEnemies: 6
+    spawnOffsetZMin: 65
+    spawnOffsetZMax: 80
   chunkCount: 2
   startingChunkCount: 1
   avaliableChunks:

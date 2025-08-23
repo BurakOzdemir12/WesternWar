@@ -8,7 +8,10 @@ using UnityEngine.UI;
 public class EnemyHealth : MonoBehaviour, IGetHit
 {
     private static readonly int Dead = Animator.StringToHash("IsDead");
-    public static event Action<EnemyHealth> OnEnemyDeath;
+    public event Action<EnemyHealth> OnEnemyDeath;
+    public static event Action<EnemyHealth> OnAnyDeath;
+    public static event Action<EnemyHealth> OnAnySpawned;
+
     [SerializeField] private EnemySo enemySo;
 
     [SerializeField] private Animator animator;
@@ -57,6 +60,7 @@ public class EnemyHealth : MonoBehaviour, IGetHit
     private IEnumerator HandleDeath()
     {
         OnEnemyDeath?.Invoke(this);
+        OnAnyDeath?.Invoke(this);
         enemyCollider.enabled = false;
         healthBarCanvas.enabled = false;
         behaviorGraphAgent.BlackboardReference.SetVariableValue(isDeadVarName, IsDead);
@@ -66,5 +70,4 @@ public class EnemyHealth : MonoBehaviour, IGetHit
     }
 
     public bool IsDead => _currentHealth <= 0;
-
 }

@@ -43,7 +43,6 @@ public class EnemySpawner : LevelBasedMonoBehaviour
         {
             int totalSpawned = 0;
 
-            // Güvenlik kontrolü: count listesi prefab listesiyle aynı uzunlukta mı?
             if (wave.enemyCounts.Count != wave.enemyPrefab.Count)
             {
                 Debug.LogError("EnemyWaveData: enemyCounts and enemyPrefab list sizes do not match!");
@@ -76,7 +75,7 @@ public class EnemySpawner : LevelBasedMonoBehaviour
         }
     }
     //if you want to use the old coroutine,
-    //it isnt have enemy count control for eaach prefab SIMPLE
+    //it isn't have enemy count control for eaach prefab SIMPLE
     // private IEnumerator SpawnEnemiesCoroutine()
     // {
     //     foreach (var wave in currentLevel.enemySpawns)

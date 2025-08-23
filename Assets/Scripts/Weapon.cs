@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Weapon : MonoBehaviour
@@ -15,9 +16,10 @@ public class Weapon : MonoBehaviour
             audioSource.clip = _weaponData.shotSfx;
     }
 
-    public void Fire()
+    public void Fire(WeaponsSo currentSo)
     {
         PlayMuzzleFlash();
+
         PlayShotSound();
         SpawnBullet();
     }
@@ -30,8 +32,9 @@ public class Weapon : MonoBehaviour
 
     private void PlayShotSound()
     {
-        if (audioSource != null && _weaponData.shotSfx != null)
-            audioSource.PlayOneShot(_weaponData.shotSfx);
+        if (!audioSource || !_weaponData.shotSfx) return; 
+        
+        audioSource.PlayOneShot(_weaponData.shotSfx);
     }
 
     private void SpawnBullet()

@@ -11,13 +11,14 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] private GameObject gamePanel;
     [SerializeField] private GameObject gameOverPanel;
+    [SerializeField] private GameObject winPanel;
 
     [SerializeField] private Slider progressBar;
     [SerializeField] private TextMeshProUGUI levelText;
     [SerializeField] private TextMeshProUGUI scoreText;
     private bool _shouldUpdateProgress = false;
-    [Tooltip("Game over Panel Text")]
 
+    [Tooltip("Game over Panel Text")]
     private void OnEnable()
     {
         GameManager.OnGameStateChanged += HandleGameStateChange;
@@ -58,7 +59,7 @@ public class UIManager : MonoBehaviour
                 gameOverPanel.SetActive(false);
                 break;
             case GameManager.GameState.LevelComplete:
-                // Handle level complete state if needed
+                winPanel.SetActive(true);
                 break;
             case GameManager.GameState.GameOver:
                 ShowGameOverPanel();
@@ -77,6 +78,7 @@ public class UIManager : MonoBehaviour
     {
         SceneManager.LoadScene(0);
     }
+
     // public void NextLevelButtonPressed()
     // {
     //     int nextLevelIndex = LevelGenerator.instance.GetCurrentLevelIndex() + 1;
@@ -96,19 +98,29 @@ public class UIManager : MonoBehaviour
         gameOverPanel.SetActive(true);
         TextPulseEffect.instance.TriggerObjectEffect(gameOverPanel);
     }
-   
+
     private float _simulatedPlayerZ = 0f;
+    private float _progressDisplay = 0f;
 
     public void UpdateProgressBar()
     {
-        _simulatedPlayerZ += LevelGenerator.instance.GetMoveSpeed() * Time.deltaTime;
-        
-        float finishZ = LevelGenerator.instance.IsFinishSpawned
-            ? LevelGenerator.instance.GetFinishZ()
-            : LevelGenerator.instance.EstimateFinishZ();
+        // _simulatedPlayerZ += LevelGenerator.instance.GetMoveSpeed() * Time.deltaTime;
+        // float finishZ = LevelGenerator.instance.IsFinishSpawned
+        //     ? LevelGenerator.instance.GetFinishZ()
+        //     : LevelGenerator.instance.EstimateFinishZ();
+        //
+        // float progress = Mathf.InverseLerp(0f, finishZ, _simulatedPlayerZ);
+        // progressBar.value = Mathf.Clamp01(progress);
 
-        float progress = Mathf.InverseLerp(0f, finishZ, _simulatedPlayerZ);
-        progressBar.value = Mathf.Clamp01(progress);
+        // Smoothly fill based on enemies defeated
+        float target = EnemyCounter.instance ? EnemyCounter.instance.GetCompletion01() : 0f;
+
+        // Smooth movement toward target (tweak speed as desired)
+        float fillSpeed = 1.5f; // units per second
+        _progressDisplay = Mathf.MoveTowards(_progressDisplay, target, fillSpeed * Time.deltaTime);
+
+        progressBar.value = Mathf.Clamp01(_progressDisplay);
+
     }
 
     private void OnDisable()

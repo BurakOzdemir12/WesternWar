@@ -6,11 +6,13 @@ using UnityEngine.UI;
 public class PlayerHealth : MonoBehaviour, IGetHit
 {
     public static PlayerHealth instance;
+    [Tooltip("Event Actions")] public static event Action<PlayerHealth> OnAnyPlayerDeath;
+    public event Action<PlayerHealth> OnPlayerDeath;
 
     [Header("So's")] [SerializeField] private PlayerSo playerSo;
 
-    [Header("References")] [SerializeField]
-    private PlayerAnimator playerAnimator;
+    [Header("References")] 
+    // [SerializeField] private PlayerAnimator playerAnimator;
 
     [SerializeField] private Animator animator;
     [SerializeField] private Collider playerCollider;
@@ -26,11 +28,12 @@ public class PlayerHealth : MonoBehaviour, IGetHit
 
     private float _currentHealth;
     public bool IsDead => _currentHealth <= 0;
-    [Tooltip("Event Actions")] public static event Action<PlayerHealth> OnPlayerDeath;
 
 
     void Start()
     {
+        
+        // if (!playerAnimator) playerAnimator = GetComponentInParent<PlayerAnimator>();
         maxHealth = playerSo.health;
         _currentHealth = maxHealth;
         healthBarSprite.fillAmount = _currentHealth / maxHealth;
@@ -64,9 +67,10 @@ public class PlayerHealth : MonoBehaviour, IGetHit
     private void HandleDeath()
     {
         DisableWDeath();
-        playerAnimator.SetSingleDeathState(animator);
+        // playerAnimator.SetSingleDeathState(animator);
 
         OnPlayerDeath?.Invoke(this);
+        OnAnyPlayerDeath?.Invoke(this);
     }
 
     public void DisableWDeath()

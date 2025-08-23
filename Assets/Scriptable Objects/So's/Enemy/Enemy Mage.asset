@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03f887ee644dc524298ab42e4e8b89f0, type: 3}
   m_Name: Enemy Mage
   m_EditorClassIdentifier: 
-  prefab: {fileID: 0}
-  health: 100
+  prefab: {fileID: 3419931874636648768, guid: acd60e49c9eab29478cecb628c3fe2d5, type: 3}
+  health: 150
   speed: 4
   attackCooldown: 3
   attackProfiles: {fileID: 11400000, guid: 0c5e4d81fcc34fa49ad09242e1b58aa9, type: 2}
-  deathVx: {fileID: 0}
+  deathSfx: {fileID: 0}

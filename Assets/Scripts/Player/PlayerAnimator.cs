@@ -9,6 +9,7 @@ public class PlayerAnimator : MonoBehaviour
     private List<Animator> _animators = new List<Animator>();
     private List<Animator> _buffer = new List<Animator>();
 
+    [SerializeField] private PlayerHealth playerHealth;
     [SerializeField] private Transform runnerParent;
     private Vector2 _currentVelocityX;
     private int _animIDRunning;
@@ -24,6 +25,8 @@ public class PlayerAnimator : MonoBehaviour
 
     private void Awake()
     {
+        if (!playerHealth) playerHealth = GetComponentInChildren<PlayerHealth>();
+
         Dead = Animator.StringToHash("Dead");
         _isDead = Animator.StringToHash("isDead");
         _isRunningHash = Animator.StringToHash("isRunning");
@@ -35,16 +38,25 @@ public class PlayerAnimator : MonoBehaviour
     private void OnEnable()
     {
         CrowdSystem.OnRunnersChanged += RefreshAnimators;
+        PlayerHealth.OnAnyPlayerDeath += HandlePlayerDeath;
+    }
+
+    private void HandlePlayerDeath(PlayerHealth playerHealth)
+    {
+        SetSingleDeathState(playerHealth.GetComponent<Animator>());
     }
 
     private void OnDisable()
     {
         CrowdSystem.OnRunnersChanged -= RefreshAnimators;
+        PlayerHealth.OnAnyPlayerDeath -= HandlePlayerDeath;
     }
 
 
     void Start()
     {
+        if (!playerHealth) playerHealth = GetComponentInChildren<PlayerHealth>();
+
         RefreshAnimators();
     }
 
@@ -117,7 +129,6 @@ public class PlayerAnimator : MonoBehaviour
             selfAnimator.SetTrigger(Dead);
             selfAnimator.SetBool(_isDead, true);
         }
-      
     }
 
     public void SetSingleDeathState(Animator animator)
