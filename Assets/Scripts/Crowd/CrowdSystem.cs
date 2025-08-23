@@ -72,6 +72,11 @@ public class CrowdSystem : MonoBehaviour
 
         runnerCount = runnerParent.childCount;
         OnRunnersChanged?.Invoke();
+
+        // if (runnerCount <= 0 && _isInGame)
+        // {
+        //     GameManager.instance.SetGameState(GameManager.GameState.GameOver);
+        // }
     }
 
     private IEnumerator AnimationDelay(GameObject go, float delay)
@@ -196,7 +201,7 @@ public class CrowdSystem : MonoBehaviour
 
                 if (playerHealth != null)
                 {
-                    playerHealth.DisableWDeath(); 
+                    playerHealth.DisableWDeath();
                 }
 
                 playerAnimator.SetMultipleDeathState(runnerToRemove);
@@ -257,6 +262,5 @@ public class CrowdSystem : MonoBehaviour
         PlayerHealth.OnAnyPlayerDeath -= HandlePlayerDeathByEnemy;
         Barrel.OnBreakBarrelWeapon -= HandleBarrelWeaponReward;
         Barrel.OnBreakBarrelMan -= HandleBarrelManReward;
-
     }
 }

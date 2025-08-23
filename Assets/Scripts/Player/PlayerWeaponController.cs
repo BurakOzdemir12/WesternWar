@@ -109,7 +109,7 @@ public class PlayerWeaponController : MonoBehaviour
         SetWeaponVisibility(true);
     }
 
-    private void SetWeaponVisibility(bool shown)
+    public void SetWeaponVisibility(bool shown)
     {
         weaponHolder.gameObject.SetActive(shown);
     }

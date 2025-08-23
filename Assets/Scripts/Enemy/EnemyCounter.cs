@@ -60,10 +60,16 @@ public class EnemyCounter : LevelBasedMonoBehaviour
 
     private void HandleEnemyDeath(EnemyHealth _)
     {
-        // Decrease remaining count when an enemy dies
+        if (!inGame) return;
+
         if (_remainingEnemyCount > 0)
             _remainingEnemyCount = Mathf.Max(0, _remainingEnemyCount - 1);
         UpdateEnemyCounterText();
+
+        if (_remainingEnemyCount <= 0)
+        {
+            GameManager.instance.SetGameState(GameManager.GameState.LevelComplete);
+        }
     }
 
     public int EnemyCount()

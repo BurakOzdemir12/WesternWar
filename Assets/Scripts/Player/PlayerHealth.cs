@@ -11,10 +11,11 @@ public class PlayerHealth : MonoBehaviour, IGetHit
 
     [Header("So's")] [SerializeField] private PlayerSo playerSo;
 
-    [Header("References")] 
-    // [SerializeField] private PlayerAnimator playerAnimator;
+    [Header("References")]
+    [SerializeField] private PlayerWeaponController playerWeaponController;
+    [SerializeField]
+    private Animator animator;
 
-    [SerializeField] private Animator animator;
     [SerializeField] private Collider playerCollider;
 
     [Space] [Header("UI Settings")] [SerializeField]
@@ -32,7 +33,6 @@ public class PlayerHealth : MonoBehaviour, IGetHit
 
     void Start()
     {
-        
         // if (!playerAnimator) playerAnimator = GetComponentInParent<PlayerAnimator>();
         maxHealth = playerSo.health;
         _currentHealth = maxHealth;
@@ -77,6 +77,13 @@ public class PlayerHealth : MonoBehaviour, IGetHit
     {
         healthBarCanvas.enabled = false;
         playerCollider.enabled = false;
+
+        // var weaponController = GetComponent<PlayerWeaponController>();
+        // if (weaponController != null)
+        // {
+        //     weaponController.SetWeaponVisibility(false);
+        // }
+        playerWeaponController.SetWeaponVisibility(false);
     }
 
     private void UpdateUI()
