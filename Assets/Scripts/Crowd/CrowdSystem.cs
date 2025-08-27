@@ -6,7 +6,7 @@ using UnityEngine.Serialization;
 
 public class CrowdSystem : MonoBehaviour
 {
-    public static CrowdSystem instance;
+    public static CrowdSystem Instance;
     public static event Action OnRunnersChanged;
     public static event Action<WeaponsSo> OnWeaponChanged;
 
@@ -32,7 +32,7 @@ public class CrowdSystem : MonoBehaviour
 
     private void Awake()
     {
-        instance = this;
+        Instance = this;
         _currentWeaponSo = startingWeapon;
 
         playerController = GetComponent<PlayerController>();
@@ -58,6 +58,7 @@ public class CrowdSystem : MonoBehaviour
     }
 
     public WeaponsSo GetCurrentWeapon() => _currentWeaponSo;
+    public WeaponsSo GetStartingWeapon() => startingWeapon;
 
     private void HandlePlayerDeathByEnemy(PlayerHealth playerHealth)
     {

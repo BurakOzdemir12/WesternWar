@@ -38,7 +38,7 @@ public class PlayerWeaponController : MonoBehaviour
         else
             _waitCoro = StartCoroutine(WaitForGameManager());
 
-        var current = CrowdSystem.instance ? CrowdSystem.instance.GetCurrentWeapon() : null;
+        var current = CrowdSystem.Instance ? CrowdSystem.Instance.GetCurrentWeapon() : null;
         if (current) ForceSetWeapon(current);
         else if (!currentSo && startingWeapon) ForceSetWeapon(startingWeapon);
     }

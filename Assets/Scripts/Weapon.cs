@@ -19,8 +19,8 @@ public class Weapon : MonoBehaviour
     public void Fire(WeaponsSo currentSo)
     {
         PlayMuzzleFlash();
-
-        PlayShotSound();
+        WeaponAudioListener.Instance.PlayShotSound();
+        // PlayShotSound();
         SpawnBullet();
     }
 
@@ -32,8 +32,8 @@ public class Weapon : MonoBehaviour
 
     private void PlayShotSound()
     {
-        if (!audioSource || !_weaponData.shotSfx) return; 
-        
+        if (!audioSource || !_weaponData.shotSfx) return;
+
         audioSource.PlayOneShot(_weaponData.shotSfx);
     }
 

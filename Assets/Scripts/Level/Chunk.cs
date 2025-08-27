@@ -61,7 +61,7 @@ public class Chunk : MonoBehaviour
             Doors doorsScript = newDoor.GetComponent<Doors>();
             if (doorsScript != null)
             {
-                int crowdSize = CrowdSystem.instance.GetRunnerCount();
+                int crowdSize = CrowdSystem.Instance.GetRunnerCount();
                 // int crowdSize = FindObjectOfType<CrowdSystem>().transform.childCount;
                 doorsScript.SetPenaltyByCrowdSize(crowdSize);
             }

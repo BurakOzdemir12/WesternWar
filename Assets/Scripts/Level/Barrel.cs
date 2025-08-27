@@ -81,7 +81,7 @@ public class Barrel : MonoBehaviour, IHittableProp
 
     private void HandleDestroy()
     {
-        if (counterValue <= 0)
+        if (this.gameObject && counterValue <= 0)
         {
             HandleBonus();
             Destroy(gameObject);

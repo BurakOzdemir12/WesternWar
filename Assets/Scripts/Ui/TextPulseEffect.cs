@@ -16,7 +16,7 @@ public class TextPulseEffect : MonoBehaviour
 
     public void TriggerObjectEffect(GameObject obj)
     {
-        if (!IsAlive || obj == null) return;
+        if (!IsAlive || !obj) return;
         instance.StartCoroutine(instance.Pulse(obj));
     }
 
@@ -68,7 +68,11 @@ public class TextPulseEffect : MonoBehaviour
         {
             timer += Time.deltaTime;
             float t = timer / duration;
-            text.rectTransform.localScale = Vector3.Lerp(startScale, peakScale, t);
+            if (IsAlive)
+            {
+                text.rectTransform.localScale = Vector3.Lerp(startScale, peakScale, t);
+            }
+
             yield return null;
         }
 
@@ -78,15 +82,21 @@ public class TextPulseEffect : MonoBehaviour
         {
             timer += Time.deltaTime;
             float t = timer / duration;
-            text.rectTransform.localScale = Vector3.Lerp(peakScale, Vector3.one, t);
+            if (IsAlive)
+            {
+                text.rectTransform.localScale = Vector3.Lerp(peakScale, Vector3.one, t);
+            }
+
             yield return null;
         }
 
-        text.rectTransform.localScale = Vector3.one; // tam sıfır hatası giderme
+        if (!text) yield break;
+
+        text.rectTransform.localScale = Vector3.one;
     }
 
     void OnDestroy()
     {
-        if (instance == this) instance = null; // asılı referansı temizle
+        if (instance == this) instance = null;
     }
 }
