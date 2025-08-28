@@ -29,7 +29,7 @@ public class UIManager : MonoBehaviour
         progressBar.value = 0;
         gamePanel.SetActive(false);
         gameOverPanel.SetActive(false);
-        levelText.text = "Level " + (LevelGenerator.instance.GetCurrentLevelIndex() + 1);
+        levelText.text = "Level " + (LevelManager.Instance.GetCurrentLevelIndex() + 1);
     }
 
     void Update()
@@ -69,14 +69,19 @@ public class UIManager : MonoBehaviour
 
     public void PlayButtonPressed()
     {
-        GameManager.instance.SetGameState(GameManager.GameState.Game);
+        GameManager.Instance.SetGameState(GameManager.GameState.Game);
         menuPanel.SetActive(false);
         gamePanel.SetActive(true);
     }
 
     public void RetryButtonPressed()
     {
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(sceneBuildIndex: SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void ReturnTowneButtonPressed()
+    {
+        SceneManager.LoadScene(sceneBuildIndex: 1);
     }
 
     // public void NextLevelButtonPressed()
@@ -120,7 +125,6 @@ public class UIManager : MonoBehaviour
         _progressDisplay = Mathf.MoveTowards(_progressDisplay, target, fillSpeed * Time.deltaTime);
 
         progressBar.value = Mathf.Clamp01(_progressDisplay);
-
     }
 
     private void OnDisable()

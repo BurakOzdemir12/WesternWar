@@ -33,8 +33,8 @@ public class PlayerWeaponController : MonoBehaviour
         CrowdSystem.OnWeaponChanged += HandleWeaponChanged;
         playerHealth.OnPlayerDeath += HandlePlayerDeath;
 
-        if (GameManager.instance != null)
-            _isInGame = GameManager.instance.IsGameActive;
+        if (GameManager.Instance != null)
+            _isInGame = GameManager.Instance.IsGameActive;
         else
             _waitCoro = StartCoroutine(WaitForGameManager());
 
@@ -46,8 +46,8 @@ public class PlayerWeaponController : MonoBehaviour
 
     private System.Collections.IEnumerator WaitForGameManager()
     {
-        while (GameManager.instance == null) yield return null;
-        _isInGame = GameManager.instance.IsGameActive;
+        while (GameManager.Instance == null) yield return null;
+        _isInGame = GameManager.Instance.IsGameActive;
         if (_isInGame) _fireTimer = 0f;
     }
 

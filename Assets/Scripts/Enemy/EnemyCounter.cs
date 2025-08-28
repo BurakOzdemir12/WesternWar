@@ -30,7 +30,7 @@ public class EnemyCounter : LevelBasedMonoBehaviour
         inGame = newState == GameManager.GameState.Game;
 
         if (!inGame) return;
-
+        _initialEnemyCount = 0;
         foreach (var spawn in currentLevel.enemySpawns)
         {
             _initialEnemyCount += spawn.maxEnemies;
@@ -68,7 +68,7 @@ public class EnemyCounter : LevelBasedMonoBehaviour
 
         if (_remainingEnemyCount <= 0)
         {
-            GameManager.instance.SetGameState(GameManager.GameState.LevelComplete);
+            GameManager.Instance.SetGameState(GameManager.GameState.LevelComplete);
         }
     }
 
@@ -87,5 +87,7 @@ public class EnemyCounter : LevelBasedMonoBehaviour
     private void OnDisable()
     {
         EnemyHealth.OnAnyDeath -= HandleEnemyDeath;
+        GameManager.OnGameStateChanged -= HandleGameStateChanged;  
+
     }
 }

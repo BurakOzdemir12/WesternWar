@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager instance;
-
+    public static GameManager Instance;
+    
     public enum GameState
     {
         Menu,
@@ -20,14 +20,15 @@ public class GameManager : MonoBehaviour
 //TODO Add Countwown Timer 3 2 1 Go!
     private void Awake()
     {
-        PlayerPrefs.SetInt("level", 0);
+        
+        // PlayerPrefs.SetInt("level", 0);
         // Cursor.visible = false;
-        if (instance != null)
+        if (Instance != null)
         {
             Destroy(gameObject);
             return; // önemli
         }
-        instance = this;
+        Instance = this;
     }
 
 
@@ -46,8 +47,8 @@ public class GameManager : MonoBehaviour
     public static void Subscribe(Action<GameState> handler, bool invokeImmediately = true)
     {
         OnGameStateChanged += handler;
-        if (invokeImmediately && instance != null)
-            handler(instance._gameState); // HEMEN mevcut state ile haber ver
+        if (invokeImmediately && Instance != null)
+            handler(Instance._gameState); // HEMEN mevcut state ile haber ver
     }
 
     public static void Unsubscribe(Action<GameState> handler)

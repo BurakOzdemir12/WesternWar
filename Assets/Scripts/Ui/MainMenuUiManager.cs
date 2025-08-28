@@ -2,6 +2,7 @@ using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 public class MainMenuUiManager : MonoBehaviour
@@ -18,14 +19,13 @@ public class MainMenuUiManager : MonoBehaviour
     [Header("Panels")] [SerializeField] GameObject[] panels;
 
 
-
     private void Start()
     {
         marketPanel.SetActive(false);
     }
+
     private void Update()
     {
-
         // if (Input.GetMouseButtonDown(0)) // veya Input System callback
         // {
         //     Vector2 screenPos = Input.mousePosition;
@@ -37,15 +37,19 @@ public class MainMenuUiManager : MonoBehaviour
         //     }
         // }
     }
+
     public void OpenOnly(GameObject target)
     {
-        
         foreach (var p in panels) p.SetActive(p == target);
+    }
+
+    public void OpenMap()
+    {
+        SceneManager.LoadScene("LevelMapScene");
     }
 
     public void CloseMarketPanel()
     {
         marketPanel.SetActive(false);
     }
-
 }

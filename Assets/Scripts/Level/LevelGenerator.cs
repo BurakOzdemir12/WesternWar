@@ -171,11 +171,7 @@ public class LevelGenerator : LevelBasedMonoBehaviour
     #endregion
 
 
-    public int GetCurrentLevelIndex()
-    {
-        return PlayerPrefs.GetInt("level");
-    }
-
+  
     public float GetChunkLength()
     {
         return chunkLength;

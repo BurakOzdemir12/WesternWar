@@ -117,7 +117,7 @@ public class CrowdSystem : MonoBehaviour
 
         if (runnerCount <= 0 && _isInGame)
         {
-            GameManager.instance.SetGameState(GameManager.GameState.GameOver);
+            GameManager.Instance.SetGameState(GameManager.GameState.GameOver);
         }
     }
 
